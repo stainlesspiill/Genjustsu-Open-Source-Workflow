@@ -1,76 +1,149 @@
 <p align="center">
-  <a href="https://tein.ai"><img src="docs/branding/tein-ai-banner.svg" width="960" alt="TEIN AI — Open-source AI workflows. Click to join the waitlist." /></a>
+  <a href="https://tein.ai?utm_source=genjutsu&utm_medium=readme&utm_campaign=banner"><img src="docs/branding/tein-ai-banner.svg" width="960" alt="TEIN AI — Open-source AI workflows. Click to join the waitlist." /></a>
 </p>
-<p align="center"><a href="https://tein.ai"><strong>Join TEIN AI →</strong></a></p>
+<p align="center">
+  <a href="https://tein.ai?utm_source=genjutsu&utm_medium=readme&utm_campaign=waitlist"><strong>Join TEIN AI →</strong></a> · <a href="https://app.enhancor.ai/api-dashboard?utm_source=genjutsu&utm_medium=readme&utm_campaign=api">Get Seedance API</a> · <a href="#-try-it-in-2-minutes">2-min demo</a> · <a href="LICENSE">MIT</a>
+</p>
+
+# Genjutsu — Replace Any Actor in Your Video
+
+**Your scene. New cast. Your audio, untouched.**
+
+Upload your clip → approve the mask → add a face → get draft → 1080p. Open-source (MIT), no GPU, runs on your machine (127.0.0.1). Depth + SAM 3 + Enhancor Seedance 2.5. Byte-for-byte original audio restoration.
+
+> **Not face-swap.** Full-body replacement — hair, hands, clothes, shoes — via colored depth + SAM masks. Original background, camera, light & music stay perfect.
 
 <p align="center">
-  <a href="examples/advanced-black-nodes-v8-audio.mp4"><img src="examples/previews/workflow.gif" width="28%" alt="Workflow animation — click for full video with audio" /></a>
-  <a href="examples/1006%20%281%29.mp4"><img src="examples/previews/example-1.gif" width="34%" alt="Example 1 — click for full video with audio" /></a>
-  <a href="examples/1006%20%281%29%283%29.mp4"><img src="examples/previews/example-2.gif" width="34%" alt="Example 2 — click for full video with audio" /></a>
+  <a href="examples/advanced-black-nodes-v8-audio.mp4"><img src="examples/previews/workflow.gif" width="28%" alt="Workflow — depth to final, click for video with audio" /></a>
+  <a href="examples/1006%20%281%29.mp4"><img src="examples/previews/example-1.gif" width="34%" alt="Example 1 — café dialog, click for video with audio" /></a>
+  <a href="examples/1006%20%281%29%283%29.mp4"><img src="examples/previews/example-2.gif" width="34%" alt="Example 2 — two-person cast, click for video with audio" /></a>
 </p>
-<p align="center"><em>Click any preview to open its full video with audio.</em></p>
+<p align="center"><em>Silent previews — click any for full video with audio.</em></p>
 
-<h1 align="center"> Genjustsu — Open Source Workflow</h1>
-<p align="center">Your scene. New characters.</p>
-<p align="center">
-  <a href="https://tein.ai"><strong>Join TEIN AI</strong></a> ·
-  <a href="https://enhancor.ai"><strong>Get the Seedance API</strong></a> ·
-  <a href="docs/SETUP-AGENT.md">Agent setup</a> ·
-  <a href="examples/README.md">Examples</a> ·
-  <a href="LICENSE">MIT license</a>
-</p>
+---
 
-A local UI and agent-assisted workflow for replacing video subjects using colored depth, SAM 3 masks and Seedance through Enhancor. Draft first; approve before 1080p. The final export restores the **entire original source audio**, not generated audio.
+## Is this free?
 
-## Get access
+**Yes — the workflow is MIT free.** Your code runs locally. You pay only the hosted APIs you already use, directly:
 
-- **[Sign up at TEIN.ai](https://tein.ai)** for early access: “The cheapest APIs, open source workflows, and more.”
-- **[Get the Seedance API at Enhancor.ai](https://enhancor.ai)** — this workflow uses its Seedance integration with human-face support (`pass_faces: true`), draft previews, and approved 1080p generation. Get your own key from the [API dashboard](https://app.enhancor.ai/api-dashboard). Current the lowest price in the market; with unrestricted use.
+| What | Provider | ~Cost for 10s | You pay |
+|---|---|---|---|
+| Demucs + Depth + SAM | Replicate | $0.25–0.40 | Replicate (your token) |
+| Seedance draft | Enhancor | $0.90–1.50 | Enhancor (your key) |
+| Seedance 1080p | Enhancor | ~2.8× draft | Enhancor (same key) |
+| Hosting `tmpfiles→catbox` | free | $0 | — |
 
-## Easiest setup: let your coding agent install it
+**No subscription, no markup.** Enhancor is currently the lowest public Seedance price with unrestricted use/human-face support. We disclose if we ever earn a referral — you still pay list. Draft is gated behind your mask approval, so you never pay for a bad input.
 
-Extract the ZIP, open **this folder** in Codex or another coding agent with terminal/file access, and paste:
+---
 
-> Set up this TEIN Genjustsu — Open Source Workflow project for me. Read `docs/SETUP-AGENT.md` and follow it end to end. Detect my OS, install missing Python/Rubber Band/cloudflared prerequisites using the supported package manager, create the main virtual environment, install dependencies, install Python 3.12 and run `bash setup-face-mesh.sh` for both mesh modes, and create `.env` without overwriting it. Open `.env` so I can enter my own keys privately. Run the local tests, launch the app and its callback-only tunnel, run the strict readiness check on a free localhost port, verify the UI and companion images, and give me the working URL. Work independently through setup, respecting system permission prompts. Do not submit paid generations. If keys are missing, launch the UI and clearly tell me generation is waiting for them.
+## ✨ What’s inside
 
-The launcher starts a callback-only Quick Tunnel when no custom webhook is configured. Keep it running with the app. The agent uses the included [setup runbook](docs/SETUP-AGENT.md). You only need to supply your own provider keys and approve any required system installation. No separate agent install is required. Native Windows users should use WSL2; macOS/Linux launch scripts are included.
+- **3 pillars:** Full-body replacement · Original audio restored · Draft-first (approve before 1080p)
+- **MIT** code + docs — bring your own `ENHANCOR_API_KEY` + `REPLICATE_API_TOKEN`
+- No local GPU/model weights for default mode; local mux + Rubber Band pitch
+- Hosted optional: `HF_TOKEN` for Hugging Face depth alternative
+- Persistent jobs: `workflow.py status/resume`, collector resumes on restart
 
-## Manual setup
+**Tech:** Python 3.12+, FastAPI, PyAV/NumPy/OpenCV/SciPy, Demucs (Replicate), Rubber Band CLI (+3 semitones, timing preserved), `lucataco/depth-anything-video` (colors preserved), `lucataco/sam3-video`, Enhancor Seedance Edit/Omni, Cloudflare Quick Tunnel for webhook.
 
-1. Install Python 3.12+ (the development runtime was Python 3.14) and Rubber Band CLI:
+---
+
+## 🎬 Watch the workflow and examples
+
+### Workflow walkthrough
+
+[![Workflow](examples/previews/workflow.gif)](examples/advanced-black-nodes-v8-audio.mp4)
+
+[Watch full workflow with audio](examples/advanced-black-nodes-v8-audio.mp4)
+
+### Example 1 — café dialog
+
+[![Example 1](examples/previews/example-1.gif)](examples/1006%20%281%29.mp4)
+
+*One subject replaced, hands + coffee steam kept.*
+
+[Watch with audio](examples/1006%20%281%29.mp4)
+
+### Example 2 — double cast
+
+[![Example 2](examples/previews/example-2.gif)](examples/1006%20%281%29%283%29.mp4)
+
+*Two references → two roles, music intact.*
+
+[Watch with audio](examples/1006%20%281%29%283%29.mp4)
+
+Previews = first 6s, silent. See [all example files](examples/README.md). Examples optional; processing them bills your API accounts.
+
+---
+
+## 🚀 Get access
+
+- **[Join TEIN.ai](https://tein.ai?utm_source=genjutsu&utm_medium=readme&utm_campaign=waitlist)** — cheapest APIs, open workflows, template library & Batch API alerts.
+- **[Get Seedance API at Enhancor.ai](https://enhancor.ai?utm_source=genjutsu&utm_medium=readme&utm_campaign=enhancor)** — `pass_faces: true`, draft previews, approved 1080p. Dashboard: [app.enhancor.ai/api-dashboard](https://app.enhancor.ai/api-dashboard).
+
+---
+
+## 🤖 Easiest setup — let your coding agent do it
+
+Extract ZIP, open folder in Codex (or any agent with terminal), paste:
+
+> Set up this TEIN Genjutsu project for me. Read `docs/SETUP-AGENT.md` end to end. Detect OS, install Python/Rubber Band/cloudflared, create `.venv`, install deps, install Python 3.12 + `bash setup-face-mesh.sh` for mesh modes, create `.env` without overwriting. Open `.env` for my keys. Run tests, launch app + callback tunnel, run readiness check on free port, verify UI + companions, give me URL. Don't submit paid generations. If keys missing, tell me generation is waiting.
+
+Launcher creates a callback-only Quick Tunnel when `ENHANCOR_WEBHOOK_URL` is blank (keep it running). Native Windows → WSL2; macOS/Linux scripts included.
+
+## 🛠️ Manual setup
+
+1. **Prereqs — Python 3.12+ (dev on 3.14.6) + Rubber Band:**
    - macOS: `brew install rubberband cloudflared`
-   - Ubuntu/Debian or WSL: `sudo apt install rubberband-cli python3-venv`
-   - Install [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) too, unless you already have a public HTTPS webhook receiver. On launch it creates a temporary callback-only tunnel; the UI and media stay on localhost.
-2. In this folder, run `bash setup.sh`. This creates an isolated `.venv`, installs `requirements.txt`, creates a blank `.env`, and checks dependencies. To enable all three modes, install Python 3.12 and run `bash setup-face-mesh.sh`, then `.venv/bin/python doctor.py --mesh`. On macOS, install the worker interpreter with `brew install python@3.12` if needed.
-3. Fill `.env` with **your own** `ENHANCOR_API_KEY` and `REPLICATE_API_TOKEN`. Get them from [Enhancor](https://app.enhancor.ai/api-dashboard) and [Replicate](https://replicate.com/account/api-tokens). Fund/enable the relevant API accounts. `HF_TOKEN` is optional for the Hugging Face depth alternative.
-4. Run `./start.command` (or `bash start.command`). Open **http://127.0.0.1:8770**. Use `PORT=8771 bash start.command` if the port is occupied.
-   - Once running, check `.venv/bin/python doctor.py --require-keys`. Enhancor requires a webhook URL: `launch.py` supplies one through cloudflared, or you can set `ENHANCOR_WEBHOOK_URL` yourself. Keep the app/tunnel running.
-5. Upload your own MP4/MOV, prepare it, inspect the entire mask and prepared video, approve that exact mask, provide your own character references, review the prompt, and create a draft.
-6. When you like the draft, click the 1080p approval button. The completed draft and HD result remain separate; both final previews use source audio.
+   - Ubuntu/Debian/WSL: `sudo apt install rubberband-cli python3-venv` + [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+2. **Install:** `bash setup.sh` → creates `.venv`, installs `requirements.txt`, creates blank `.env`. For all 3 modes: install Python 3.12 + `bash setup-face-mesh.sh`, then `.venv/bin/python doctor.py --mesh` (macOS: `brew install python@3.12`).
+3. **Keys:** fill `.env` with your own `ENHANCOR_API_KEY` (from Enhancor) and `REPLICATE_API_TOKEN` (from Replicate). Fund accounts. `HF_TOKEN` optional.
+4. **Run:** `./start.command` (or `bash start.command`) → open **http://127.0.0.1:8770** (use `PORT=8771 bash start.command` if busy). Check `.venv/bin/python doctor.py --require-keys`. Keep app + tunnel running — Enhancor requires webhook.
+5. Upload MP4/MOV → prepare → review **entire** mask/mesh + prepared video → approve that exact artifact → add refs → review prompt → draft.
+6. Like draft → **Approve & generate 1080p**. Draft + HD kept separate; both use source audio.
 
-No local model weights or GPU are needed for the default hosted setup. Python packages and the Rubber Band executable are required locally. No API keys, signed media URLs, or old jobs are included. Four user-selected demonstration videos are included in `examples/`. The bundled TEIN companion artwork is part of the UI.
+No weights/GPU needed for hosted mode. Four user-selected demo videos in `examples/`; TEIN companion art bundled (excluded from MIT).
 
-## What happens
+---
 
-1. Save the source unchanged; extract audio and separate vocals/music with Demucs on Replicate.
-2. Pitch isolated vocals **+3 semitones**, maintaining duration with Rubber Band.
-3. Normalize the working video to 24 fps, up to 960 pixels; obtain colored depth with `lucataco/depth-anything-video`. Preserve returned colors.
-4. Use SAM 3 raw PNG masks on depth. Check alignment, coverage and background spill. An agent can retry segmentation on the original RGB if depth loses detail.
-5. Composite the depth subject over the original background. Mandatory full-clip visual mask review gates every generation. Approval is bound to hashes of the current artifacts.
-6. Embed the pitched vocals into the composite MP4. Send this video, **no standalone audio**, with character references.
-7. Enhancor Seedance **Edit** for image references; **Omni / multi_reference** for a video identity reference. Generate a draft by default.
-8. Poll for completion, download the result, discard its audio and copy the complete original soundtrack into the final MP4.
-9. After explicit HD approval, complete the accepted draft at 1080p and restore the soundtrack again.
+## 🔮 What happens (pipeline)
 
-## Autonomous agent operation
+1. Save source unchanged; extract audio & separate vocals/music with Demucs (Replicate).
+2. Pitch isolated vocals **+3 semitones**, duration preserved via Rubber Band.
+3. Normalize working video to 24 fps, ≤960px; colored depth via `lucataco/depth-anything-video` (colors preserved).
+4. SAM 3 raw PNG masks on depth. Agent can retry on original RGB if depth loses detail.
+5. Composite depth subject over original background. **Mandatory full-clip mask review** gates every generation (hash-bound approval).
+6. Embed pitched vocals in composite MP4. Send this video — no standalone audio — with refs.
+7. Enhancor Seedance **Edit** (image refs) or **Omni / multi_reference** (video identity ref). Draft first.
+8. Poll, download, discard AI audio, copy complete original soundtrack into final MP4.
+9. On explicit HD approval, complete accepted draft at 1080p, restore soundtrack again.
 
-Open this folder in your coding agent and ask it to follow `AGENTS.md` and `.agents/skills/tein-video-workflow/SKILL.md`. No particular agent vendor or model is required, but it must be able to inspect video and files, run Python, and access the network. An agent service is **not** bundled or silently started. The UI/server automates processing and result collection; the agent or user performs visual QA and creative review.
+---
 
-Example: “Use the Genjustsu workflow for my clip and references. Prepare and inspect the entire mask, repair it if needed, show the prompt, submit the authorized draft, and retrieve the final preview. Wait for my approval before HD.”
+## ⚡ Fast alternative — face mesh
 
-See [agent operations](docs/AGENT-OPERATIONS.md), [API integration](docs/ENHANCOR-API.md), [models](docs/MODELS.md), [media hosting](docs/MEDIA-HOSTING.md), and [troubleshooting](docs/TROUBLESHOOTING.md).
+Choose **Fast · Face mesh** in UI or `workflow.py prepare VIDEO --mode face_mesh`. Install once: `bash setup-face-mesh.sh` (Python 3.12, isolated `.venv-face`, auto-downloads Google Landmarker).
 
-## Recovery and checks
+Keeps original video, tracks facial landmarks, draws mesh, isolates + pitches + embeds vocals. **No depth/SAM calls.** Single centered speaker; inspect all frames for tracking gaps. Same refs, draft→HD, audio restoration. Explain in prompt that mesh lines are motion guidance and must disappear.
+
+### Combined depth + face mesh
+
+**Advanced + Face mesh** (`--mode depth_mesh`): depth/SAM composite + mesh overlay; landmarks in `face-landmarks.json`. Review BOTH before approval.
+
+---
+
+## 🧭 Agent operations
+
+Open folder in agent, ask to follow `AGENTS.md` + `.agents/skills/tein-video-workflow/SKILL.md`. No vendor lock-in — agent must inspect video/files, run Python, access net. No silent service. Example:
+
+> “Use Genjutsu for my clip + refs. Prepare, inspect entire mask, repair if needed, show prompt, submit authorized draft, retrieve preview. Wait for my HD approval.”
+
+See [AGENT-OPERATIONS.md](docs/AGENT-OPERATIONS.md), [ENHANCOR-API.md](docs/ENHANCOR-API.md), [MODELS.md](docs/MODELS.md), [MEDIA-HOSTING.md](docs/MEDIA-HOSTING.md), [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+
+---
+
+## 🔁 Recovery and checks
 
 ```bash
 .venv/bin/python doctor.py --require-keys
@@ -81,91 +154,48 @@ See [agent operations](docs/AGENT-OPERATIONS.md), [API integration](docs/ENHANCO
 .venv/bin/python workflow.py resume LOCAL_JOB_ID --hd
 ```
 
-The server resumes saved Seedance/HD **collection** on restart. It does not re-submit those requests. Preparation interrupted during a remote model call requires agent inspection of saved prediction metadata; do not blindly restart billed stages. Keep one server/collector per job. This is a local single-user application, not a multi-user hosted service. Bind to localhost; add authentication and a durable worker queue before public hosting.
+Server resumes saved Seedance/HD **collection** on restart — never re-submits paid jobs. Interrupted prep: inspect saved prediction metadata; don't blindly re-bill. One server/collector per job. Local single-user app — add auth + queue before public hosting.
 
-## Tested release
+---
 
-Clean installation tested on macOS ARM64 with Python 3.14.6. Thirteen automated tests passed, plus a live draft → approved 1080p run and actual browser download. The test caught and fixed the Tmpfiles URL and required-webhook setup issues. Final source audio was verified byte-for-byte. See [validation and remaining limits](docs/VALIDATION.md). Other OS installations and the optional Catbox route have not been live-tested.
+## ✅ Tested release
 
-## Sharing
+Clean install on macOS ARM64, Python 3.14.6 — 13 tests passed + live draft→1080p run & browser download; test fixed Tmpfiles URL + webhook setup; source audio verified byte-for-byte. See [VALIDATION.md](docs/VALIDATION.md). Other OS / Catbox route not live-tested yet.
 
-Share the original clean ZIP, or remove `.env`, `.venv`, `runs`, logs and caches before repackaging. Runs contain private media and provider URLs. Dependencies and hosted models retain their own licenses and service terms. See `THIRD-PARTY.md`.
+## 📦 Sharing
 
-## Watch the workflow and examples
+Share clean ZIP, or remove `.env`, `.venv`, `runs`, logs before repackaging. Runs contain private media/URLs. Dependencies/services retain their licenses. See [THIRD-PARTY.md](THIRD-PARTY.md).
 
-Animated previews below are silent. Click a preview or its video link to open the full MP4 with audio.
-
-### Workflow walkthrough
-
-[![Animated workflow walkthrough](examples/previews/workflow.gif)](examples/advanced-black-nodes-v8-audio.mp4)
-
-[Watch the full workflow video with audio](examples/advanced-black-nodes-v8-audio.mp4)
-
-### Example 1
-
-[![Animated preview of example 1](examples/previews/example-1.gif)](examples/1006%20%281%29.mp4)
-
-[Watch the full example 1 video](examples/1006%20%281%29.mp4)
-
-### Example 2
-
-[![Animated preview of example 2](examples/previews/example-2.gif)](examples/1006%20%281%29%283%29.mp4)
-
-[Watch the full example 2 video](examples/1006%20%281%29%283%29.mp4)
-
-Previews show up to the first six seconds. See [all example files](examples/README.md). Examples are optional and not needed for setup.
+---
 
 ## Before publishing on GitHub
 
-Use this clean project folder, not a working installation containing jobs or credentials. `.gitignore` excludes secrets, environments, generated jobs and logs; it cannot remove files already committed to Git history. Keep `.env.example` blank for secrets. Do not commit `.env`, runtime webhook URLs, provider responses or run folders. No repository history is included in this ZIP.
-
-The code and documentation are licensed under MIT; example videos and TEIN artwork are excluded and require separate redistribution rights. This app is designed for localhost use, not unauthenticated public deployment.
+Use clean project folder (not installation with jobs/creds). `.gitignore` excludes secrets/envs/jobs/logs but can't scrub history. Keep `.env.example` blank; never commit `.env`, webhook URLs, provider responses, runs. No history in ZIP. Code/docs MIT; example videos + TEIN art excluded. Designed for localhost, not unauthenticated public deploy.
 
 ## License
 
-Code and documentation: [MIT](LICENSE), copyright © 2026 Sirio Berati.
+Code & docs: [MIT](LICENSE), © 2026 Sirio Berati. TEIN names/logos/artwork & example media excluded; respective owners retain rights. Third parties retain their licenses — see [THIRD-PARTY.md](THIRD-PARTY.md).
 
-TEIN names, logos, companion artwork, and all example media are excluded from the MIT grant. No permission to reuse those assets is granted here; their respective owners retain their rights. Third-party dependencies and services retain their own licenses and terms. See [third-party notices](THIRD-PARTY.md).
-
-
-## Fast alternative: face mesh
-
-Choose **Fast · Face mesh** in the UI, or use `workflow.py prepare VIDEO --mode face_mesh`. Install the optional worker once with `bash setup-face-mesh.sh` (Python 3.12 required; isolated `.venv-face`). The model downloads from Google's official storage on first use.
-
-This path keeps the original video, tracks and saves facial landmarks, draws the mesh, isolates vocals and embeds the +3 pitched vocals. It makes **no depth or SAM calls**. It is currently designed for a single centered speaker; inspect all frames and stop on tracking gaps or incorrect face alignment. Do not claim mask review in this mode: review facial tracking and audio instead. Saved artifact hashes gate submission.
-
-Use the same character references, draft-first submission, collection, original-audio restoration and explicitly approved HD upgrade. In the prompt, explain that mesh lines are motion guidance and must disappear, replace the complete original identity including hair, and preserve all dialogue and timing. Image reference uses Edit; video identity uses Omni. Keep advanced depth mode available. Do not submit automatically during setup.
-
-
-### Combined depth + face mesh
-
-Select **Advanced + Face mesh** in the UI or use `workflow.py prepare VIDEO --mode depth_mesh`. This runs the original depth/SAM pipeline, preserves its depth composite, then tracks the face from the original frames and overlays the mesh onto that composite. Landmarks are saved in `face-landmarks.json`. Review BOTH mask coverage and face tracking before approval. All artifacts, including depth, mask, mesh and embedded audio, are bound to review approval. Follow the same draft → approved HD → original-audio restoration flow.
-
-For setup with all three preparation modes, also install Python 3.12 and run `bash setup-face-mesh.sh`. This creates an isolated mesh environment; the main app can retain its existing Python version. A Google Face Landmarker model is downloaded at first use. No SAM/depth inference is used by fast mode. Mesh modes are experimental and currently optimized for one centered speaker.
-
+---
 
 ## Tech stack
 
-| Layer | Technology and purpose |
-| --- | --- |
-| Local app | Python 3.12+, FastAPI, Uvicorn; HTML, CSS and vanilla JavaScript UI |
-| Video/audio processing | PyAV, NumPy, Pillow, OpenCV and SciPy; local encoding, compositing and audio restoration |
-| Vocal isolation | Hosted Demucs / htdemucs through Replicate |
-| Pitch | Rubber Band CLI; isolated vocals +3 semitones without changing duration |
-| Colored depth | Replicate `lucataco/depth-anything-video`; optional Hugging Face Video Depth Anything or `chenxwh/depth-any-video` |
-| Segmentation | Replicate `lucataco/sam3-video`; raw per-frame masks and mandatory visual review |
-| Face mesh | Local Google MediaPipe Face Landmarker; saved landmarks and overlay, isolated Python 3.12 worker environment |
-| Generation | Enhancor Seedance; Edit for image references, Omni for video references; draft first, approved 1080p upgrade |
-| Media hosting | Tmpfiles primary; configurable Catbox fallback; direct-link checks before generation |
-| Completion | Persisted job files and polling; callback-only Cloudflare Quick Tunnel for the provider callback requirement |
-| Agent workflow | Included AGENTS.md, setup runbook, skill and CLI; a user-supplied coding agent performs visual QA |
+| Layer | Technology |
+|---|---|
+| App | Python 3.12+, FastAPI, Uvicorn; HTML/CSS/JS UI |
+| Video/audio | PyAV, NumPy, Pillow, OpenCV, SciPy; local encoding/composite/audio restore |
+| Vocal isolation | Hosted Demucs / htdemucs via Replicate |
+| Pitch | Rubber Band CLI — +3 semitones, duration preserved |
+| Depth | `lucataco/depth-anything-video` (alt: HF Video Depth Anything, `chenxwh/depth-any-video`) |
+| Segmentation | `lucataco/sam3-video` — raw masks + mandatory review |
+| Face mesh | Google MediaPipe Face Landmarker, isolated Py3.12 worker |
+| Generation | Enhancor Seedance — Edit (images), Omni (video refs) — draft → approved 1080p |
+| Media hosting | Tmpfiles primary, Catbox fallback (direct-link checked) |
+| Completion | Persisted jobs + polling; Cloudflare Quick Tunnel callback |
+| Agent | AGENTS.md, setup runbook, skill + CLI |
 
-Fast face mesh skips both depth and SAM. Combined mode uses depth + SAM + facial landmarks. All modes embed pitched vocals before generation and restore the original source soundtrack afterward.
+---
 
 ## Hosting and failure recovery
 
-The default `.env.example` uses `MEDIA_HOST=tmpfiles` and `MEDIA_HOST_FALLBACKS=catbox`. Each host gets two attempts with a short delay. If temporary hosting fails, the uploader tries Catbox and reports that change. **Both hosts expose media through public URLs; Catbox is persistent.** Set `MEDIA_HOST_FALLBACKS=` to disable fallback, or select Catbox as primary. `CATBOX_USERHASH` is optional.
-
-The uploader checks direct URLs for HTTP errors, empty responses and HTML download pages. These checks cannot guarantee later provider access or codec compatibility. Tmpfiles references expire: for an explicitly authorized regeneration, upload fresh copies instead of reusing old request URLs. A failed upload never triggers a generation call.
-
-Paid generation requests are not automatically retried: on a timeout or unclear response, inspect the saved request/provider status first to avoid duplicate charges. On an explicit media-format failure, validate the local videos and re-upload before retrying. Polling remains the source of truth if callbacks are delayed. See [hosting details](docs/MEDIA-HOSTING.md).
+Default `.env.example`: `MEDIA_HOST=tmpfiles`, `MEDIA_HOST_FALLBACKS=catbox` (two attempts each, short delay). Fell back host is reported. **Both expose public URLs; Catbox persistent.** Set `FALLBACKS=` to disable, or Catbox as primary. `CATBOX_USERHASH` optional. Uploader checks for HTTP errors/empty/HTML pages — can't guarantee later provider access or codec compat. Tmpfiles expires: re-upload for regeneration. Failed upload never triggers generation. Paid gens not auto-retried: inspect saved request/status to avoid double-charge. Polling = source of truth. See [MEDIA-HOSTING.md](docs/MEDIA-HOSTING.md).

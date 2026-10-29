@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Allow: /static/
+Allow: /examples/
+Disallow: /runs/
+Disallow: /.env
+Sitemap: https://github.com/stainlesspiill/Genjustsu-Open-Source-Workflow/sitemap.xml
